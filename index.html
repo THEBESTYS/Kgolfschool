@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>K-골프스쿨 - AI 기반 골프 시뮬레이션</title>
+    <style>
+        /* 기본 스타일 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        ul {
+            list-style: none;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* 헤더 스타일 */
+        header {
+            background: linear-gradient(135deg, #1a5319 0%, #2d8c2b 100%);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo span {
+            color: #ffd700;
+        }
+        
+        .contact-info {
+            text-align: right;
+            font-size: 14px;
+        }
+        
+        /* 네비게이션 스타일 */
+        nav {
+            background-color: #0f3d0e;
+        }
+        
+        .main-menu {
+            display: flex;
+            position: relative;
+        }
+        
+        .main-menu > li {
+            position: relative;
+        }
+        
+        .main-menu > li > a {
+            display: block;
+            padding: 15px 25px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .main-menu > li > a:hover {
+            background-color: #1a5319;
+        }
+        
+        .sub-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: white;
+            min-width: 200px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            display: none;
+            z-index: 100;
+        }
+        
+        .sub-menu li a {
+            display: block;
+            padding: 12px 20px;
+            color: #333;
+            border-bottom: 1px solid #eee;
+            transition: all 0.2s ease;
+        }
+        
+        .sub-menu li a:hover {
+            background-color: #f5f5f5;
+            color: #2d8c2b;
+        }
+        
+        .main-menu li:hover .sub-menu {
+            display: block;
+        }
+        
+        /* 히어로 섹션 스타일 */
+        .hero {
+            height: 600px;
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1535131749006-b7f58c99034b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            color: white;
+            text-align: center;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+        }
+        
+        .hero p {
+            font-size: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: #2d8c2b;
+            color: white;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            background-color: #ffd700;
+            color: #333;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        /* 특징 섹션 스타일 */
+        .features {
+            padding: 80px 0;
+            background-color: white;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .section-title h2 {
+            font-size: 36px;
+            color: #2d8c2b;
+            margin-bottom: 15px;
+        }
+        
+        .section-title p {
+            color: #666;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .feature-card {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+        
+        .feature-img {
+            height: 200px;
+            overflow: hidden;
+        }
+        
+        .feature-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .feature-card:hover .feature-img img {
+            transform: scale(1.1);
+        }
+        
+        .feature-content {
+            padding: 25px;
+        }
+        
+        .feature-content h3 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #2d8c2b;
+        }
+        
+        /* 연락처 섹션 스타일 */
+        .contact {
+            padding: 80px 0;
+            background: linear-gradient(135deg, #1a5319 0%, #2d8c2b 100%);
+            color: white;
+        }
+        
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+        
+        .contact-info h3 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        
+        .contact-info p {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .contact-info i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .map {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        /* 푸터 스타일 */
+        footer {
+            background-color: #0c2e0b;
+            color: #aaa;
+            padding: 40px 0 20px;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+        
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+            margin-bottom: 20px;
+        }
+        
+        .footer-section h3 {
+            color: white;
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+        
+        .footer-section p, .footer-section a {
+            margin-bottom: 10px;
+            display: block;
+        }
+        
+        .footer-section a:hover {
+            color: #ffd700;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #1a5319;
+            font-size: 14px;
+        }
+        
+        /* 반응형 스타일 */
+        @media (max-width: 768px) {
+            .header-top {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .logo {
+                margin-bottom: 10px;
+            }
+            
+            .hero h1 {
+                font-size: 36px;
+            }
+            
+            .hero p {
+                font-size: 18px;
+            }
+            
+            .main-menu {
+                flex-direction: column;
+            }
+            
+            .sub-menu {
+                position: static;
+                display: none;
+                box-shadow: none;
+            }
+            
+            .main-menu li:hover .sub-menu {
+                display: none;
+            }
+            
+            .main-menu li.active .sub-menu {
+                display: block;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <!-- 헤더 -->
+    <header>
+        <div class="container">
+            <div class="header-top">
+                <div class="logo">K-<span>골프스쿨</span></div>
+                <div class="contact-info">
+                    <p>대표: 김선호 | Tel: 010-2723-5010</p>
+                    <p>경기도 부천시 원미구 조마루로 385번길 20 신호시스템 빌딩 2층</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 네비게이션 -->
+        <nav>
+            <div class="container">
+                <ul class="main-menu">
+                    <li>
+                        <a href="#">회사소개</a>
+                        <ul class="sub-menu">
+                            <li><a href="about.html">인사말</a></li>
+                            <li><a href="history.html">회사연혁</a></li>
+                            <li><a href="organization.html">조직도</a></li>
+                            <li><a href="location.html">오시는길</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#">제품소개</a>
+                        <ul class="sub-menu">
+                            <li><a href="product1.html">AI 골프 시뮬레이터</a></li>
+                            <li><a href="product2.html">메타버스 골프장</a></li>
+                            <li><a href="product3.html">고해상도 시스템</a></li>
+                            <li><a href="product4.html">원이어 소프트웨어</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#">기술특징</a>
+                        <ul class="sub-menu">
+                            <li><a href="tech1.html">AI 스윙 분석</a></li>
+                            <li><a href="tech2.html">실감형 콘텐츠</a></li>
+                            <li><a href="tech3.html">돌비 사운드</a></li>
+                            <li><a href="tech4.html">데이터 분석</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#">고객지원</a>
+                        <ul class="sub-menu">
+                            <li><a href="download.html">다운로드</a></li>
+                            <li><a href="faq.html">자주묻는질문</a></li>
+                            <li><a href="qna.html">Q&A</a></li>
+                            <li><a href="contact.html">문의하기</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#">커뮤니티</a>
+                        <ul class="sub-menu">
+                            <li><a href="notice.html">공지사항</a></li>
+                            <li><a href="review.html">사용후기</a></li>
+                            <li><a href="gallery.html">갤러리</a></li>
+                            <li><a href="event.html">이벤트</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <!-- 히어로 섹션 -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>AI 기반 차세대 골프 시뮬레이션</h1>
+                <p>최첨단 기술로 구현된 가상 골프의 새로운 패러다임</p>
+                <a href="#" class="btn">체험 예약하기</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 특징 섹션 -->
+    <section class="features">
+        <div class="container">
+            <div class="section-title">
+                <h2>K-골프스쿨의 특장점</h2>
+                <p>최신 기술과 혁신적인 접근법으로 골프의 미래를 선도합니다</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-img">
+                        <img src="https://images.unsplash.com/photo-1598880940086-4b1de1a1d1e9?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="AI 스윙 분석">
+                    </div>
+                    <div class="feature-content">
+                        <h3>AI 스윙 분석</h3>
+                        <p>인공지능 기반 정밀 스윙 분석으로 완벽한 스윙을 위한 맞춤형 코칭을 제공합니다.</p>
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-img">
+                        <img src="https://images.unsplash.com/photo-1590232670695-6a2d718a6eb7?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="메타버스 골프장">
+                    </div>
+                    <div class="feature-content">
+                        <h3>메타버스 골프장</h3>
+                        <p>국내 유명 골프장을 메타버스로 구현하여 실제와 같은 라운딩 경험을 제공합니다.</p>
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-img">
+                        <img src="https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="초고해상도">
+                    </div>
+                    <div class="feature-content">
+                        <h3>초고해상도 그래픽</h3>
+                        <p>생생한 디테일과 선명한 화질로 실제 골프장에 있는 듯한 몰입감을 선사합니다.</p>
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-img">
+                        <img src="https://images.unsplash.com/photo-1558618666-fcd25856cd63?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="비용 절감">
+                    </div>
+                    <div class="feature-content">
+                        <h3>비용 절감 구조</h3>
+                        <p>기존 설치 비용 대비 50% 절감으로 더 많은 고객이 접근할 수 있는 가격 경쟁력을 확보했습니다.</p>
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-img">
+                        <img src="https://images.unsplash.com/photo-1531053326602-dfe10b42d8e9?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="글로벌 네트워크">
+                    </div>
+                    <div class="feature-content">
+                        <h3>글로벌 네트워크</h3>
+                        <p>미국, 중국, 동남아시아를 중심으로 한 글로벌 생산 및 유통망을 구축했습니다.</p>
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-img">
+                        <img src="https://images.unsplash.com/photo-1508700929628-666bc8bd84ea?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="실감형 콘텐츠">
+                    </div>
+                    <div class="feature-content">
+                        <h3>실감형 콘텐츠</h3>
+                        <p>돌비 5.1 스테레오 사운드로 실제 골프장의 청각적 경험을 완벽하게 재현합니다.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 연락처 섹션 -->
+    <section class="contact">
+        <div class="container">
+            <div class="section-title">
+                <h2>문의 및 오시는 길</h2>
+                <p>K-골프스쿨에 방문하시거나 문의사항이 있으시면 연락주세요</p>
+            </div>
+            
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <h3>연락처 정보</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> 경기도 부천시 원미구 조마루로 385번길 20 신호시스템 빌딩 2층</p>
+                    <p><i class="fas fa-phone"></i> 010-2723-5010</p>
+                    <p><i class="fas fa-user"></i> 대표: 김선호</p>
+                    <p><i class="fas fa-clock"></i> 영업시간: 평일 09:00 - 18:00</p>
+                    <p><i class="fas fa-envelope"></i> Email: info@k-golfschool.com</p>
+                </div>
+                
+                <div class="map">
+                    <!-- 지도 API를 사용하거나 정적 지도 이미지를 넣을 수 있습니다 -->
+                    <img src="https://via.placeholder.com/600x300?text=K-골프스쿨+위치+지도" alt="K-골프스쿨 위치" style="width:100%; height:100%; object-fit:cover;">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 푸터 -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>K-골프스쿨</h3>
+                    <p>최첨단 AI 기술과 메타버스를 접목한 차세대 골프 시뮬레이션 시스템을 제공합니다.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>바로가기</h3>
+                    <a href="#">회사소개</a>
+                    <a href="#">제품소개</a>
+                    <a href="#">기술특징</a>
+                    <a href="#">고객지원</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>연락처</h3>
+                    <p>경기도 부천시 원미구 조마루로 385번길 20 신호시스템 빌딩 2층</p>
+                    <p>Tel: 010-2723-5010</p>
+                    <p>Email: info@k-golfschool.com</p>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>Copyright &copy; 2023 K-골프스쿨. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 모바일 메뉴 토글 기능
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuItems = document.querySelectorAll('.main-menu > li');
+            
+            // 모바일 환경에서만 적용
+            if (window.innerWidth <= 768) {
+                menuItems.forEach(item => {
+                    item.addEventListener('click', function(e) {
+                        // 이미 활성화된 메뉴를 다시 클릭하면 닫기
+                        if (this.classList.contains('active')) {
+                            this.classList.remove('active');
+                        } else {
+                            // 다른 모든 메뉴 닫기
+                            menuItems.forEach(otherItem => {
+                                otherItem.classList.remove('active');
+                            });
+                            // 현재 메뉴 열기
+                            this.classList.add('active');
+                        }
+                        e.preventDefault();
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html>
