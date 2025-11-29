@@ -64,6 +64,10 @@
         .logo-img {
             height: 50px;
             width: auto;
+            border: 2px solid #8bc34a;
+            border-radius: 8px;
+            padding: 5px;
+            background-color: white;
         }
 
         .logo-text {
@@ -437,6 +441,10 @@
         .footer-logo-img {
             height: 40px;
             width: auto;
+            border: 2px solid #8bc34a;
+            border-radius: 6px;
+            padding: 3px;
+            background-color: white;
         }
 
         .footer-logo-text {
@@ -472,6 +480,9 @@
             width: 100%;
             height: auto;
             border-radius: 8px;
+            border: 2px solid #8bc34a;
+            padding: 10px;
+            background-color: #f0f7f0;
         }
 
         .ci-text {
@@ -487,6 +498,19 @@
         .ci-text p {
             color: #666;
             line-height: 1.8;
+        }
+
+        /* 대체 이미지 스타일 */
+        .placeholder-img {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1a3a1a 0%, #2d5a2d 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            border-radius: 6px;
         }
 
         /* 반응형 스타일 */
@@ -558,7 +582,12 @@
         <div class="container">
             <div class="header-top">
                 <div class="logo-container">
-                    <img src="/images/GVITA(1).png" alt="GVITA CI" class="logo-img">
+                    <!-- 방법 1: 상대 경로 사용 -->
+                    <img src="images/GVITA(1).png" alt="GVITA CI" class="logo-img" onerror="this.style.display='none'; document.getElementById('logo-placeholder').style.display='flex';">
+                    <!-- 방법 2: 대체 이미지 -->
+                    <div id="logo-placeholder" class="logo-img placeholder-img" style="display:none;">
+                        GVITA
+                    </div>
                     <div class="logo-text">G<span>VITA</span></div>
                 </div>
                 <div class="contact-info">
@@ -702,7 +731,12 @@
             <div class="ci-section">
                 <div class="ci-content">
                     <div class="ci-image">
-                        <img src="/images/GVITA(1).png" alt="GVITA CI">
+                        <!-- 방법 1: 상대 경로 사용 -->
+                        <img src="images/GVITA(1).png" alt="GVITA CI" onerror="this.style.display='none'; document.getElementById('ci-placeholder').style.display='flex';">
+                        <!-- 방법 2: 대체 이미지 -->
+                        <div id="ci-placeholder" class="placeholder-img" style="display:none; height: 200px;">
+                            GVITA CI
+                        </div>
                     </div>
                     <div class="ci-text">
                         <h3>GVITA 브랜드 아이덴티티</h3>
@@ -746,7 +780,12 @@
             <div class="footer-content">
                 <div class="footer-column">
                     <div class="footer-logo">
-                        <img src="/images/GVITA(1).png" alt="GVITA CI" class="footer-logo-img">
+                        <!-- 방법 1: 상대 경로 사용 -->
+                        <img src="images/GVITA(1).png" alt="GVITA CI" class="footer-logo-img" onerror="this.style.display='none'; document.getElementById('footer-logo-placeholder').style.display='flex';">
+                        <!-- 방법 2: 대체 이미지 -->
+                        <div id="footer-logo-placeholder" class="footer-logo-img placeholder-img" style="display:none;">
+                            GVITA
+                        </div>
                         <div class="footer-logo-text">G<span>VITA</span></div>
                     </div>
                     <p>AI 기반 프리미엄 골프 시뮬레이션으로 새로운 골프 경험을 제공합니다.</p>
@@ -806,6 +845,14 @@
                         }
                     });
                 }
+            });
+
+            // 이미지 로드 실패 시 대체 컨텐츠 표시
+            const images = document.querySelectorAll('img[src*="GVITA"]');
+            images.forEach(img => {
+                img.addEventListener('error', function() {
+                    console.log('GVITA 이미지를 로드할 수 없습니다: ' + this.src);
+                });
             });
         });
     </script>
