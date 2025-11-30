@@ -196,7 +196,7 @@
             margin: 0 auto;
         }
 
-        /* 탭 네비게이션 */
+        /* 탭 네비게이션 - 모바일 최적화 */
         .tab-navigation {
             background: white;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -531,7 +531,7 @@
             border-radius: 6px;
         }
 
-        /* 반응형 스타일 */
+        /* 반응형 스타일 - 모바일 최적화 개선 */
         @media (max-width: 992px) {
             .menu-toggle {
                 display: block;
@@ -570,6 +570,11 @@
             .tab-menu a {
                 padding: 15px 20px;
                 text-align: center;
+                border-bottom: 1px solid #f0f0f0;
+            }
+            
+            .tab-menu a:last-child {
+                border-bottom: none;
             }
             
             .timeline::before {
@@ -594,6 +599,12 @@
             
             .ci-image {
                 flex: 0 0 auto;
+            }
+
+            /* 모바일에서 탭 네비게이션 위치 조정 */
+            .tab-navigation {
+                top: 0;
+                position: relative;
             }
         }
 
@@ -631,6 +642,39 @@
             .card-title {
                 font-size: 24px;
             }
+
+            .section-title {
+                font-size: 28px;
+            }
+
+            .tab-menu a {
+                padding: 12px 15px;
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .page-header h1 {
+                font-size: 28px;
+            }
+            
+            .page-header p {
+                font-size: 16px;
+            }
+            
+            .vision-card, .history-card, .ci-card {
+                padding: 20px;
+            }
+            
+            .section-icon {
+                width: 60px;
+                height: 60px;
+                font-size: 24px;
+            }
+            
+            .color-palette {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -660,9 +704,9 @@
                     <li>
                         <a href="about.html" class="has-submenu">회사소개 <i class="fas fa-chevron-down"></i></a>
                         <ul class="sub-menu">
-                            <li><a href="about.html#vision">비전</a></li>
-                            <li><a href="about.html#history">연혁</a></li>
-                            <li><a href="about.html#ci">CI소개</a></li>
+                            <li><a href="about.html#vision" class="tab-nav-link" data-tab="vision">비전</a></li>
+                            <li><a href="about.html#history" class="tab-nav-link" data-tab="history">연혁</a></li>
+                            <li><a href="about.html#ci" class="tab-nav-link" data-tab="ci">CI소개</a></li>
                         </ul>
                     </li>
                     <li>
@@ -965,8 +1009,9 @@
                 }
             });
             
-            // 서브메뉴 토글 기능
+            // 서브메뉴 토글 기능 - 모바일에서 탭 링크 클릭 시 메뉴 자동 닫기
             const submenuToggles = document.querySelectorAll('.has-submenu');
+            const tabNavLinks = document.querySelectorAll('.tab-nav-link');
             
             submenuToggles.forEach(toggle => {
                 toggle.addEventListener('click', function(e) {
@@ -999,6 +1044,34 @@
                 });
             });
 
+            // 탭 네비게이션 링크 클릭 시 메뉴 닫기
+            tabNavLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    if (window.innerWidth <= 992) {
+                        mainMenu.classList.remove('active');
+                        menuToggle.querySelector('i').classList.remove('fa-times');
+                        menuToggle.querySelector('i').classList.add('fa-bars');
+                        
+                        // 모든 서브메뉴 닫기
+                        document.querySelectorAll('.sub-menu, .sub-sub-menu').forEach(menu => {
+                            menu.classList.remove('active');
+                        });
+                        
+                        // 아이콘 초기화
+                        document.querySelectorAll('.has-submenu i').forEach(icon => {
+                            if (icon.classList.contains('fa-chevron-up')) {
+                                icon.classList.remove('fa-chevron-up');
+                                icon.classList.add('fa-chevron-down');
+                            }
+                            if (icon.classList.contains('fa-chevron-left')) {
+                                icon.classList.remove('fa-chevron-left');
+                                icon.classList.add('fa-chevron-right');
+                            }
+                        });
+                    }
+                });
+            });
+
             // 탭 네비게이션 기능
             const tabLinks = document.querySelectorAll('.tab-link');
             const contentSections = document.querySelectorAll('.content-section');
@@ -1018,6 +1091,16 @@
                     
                     // URL 해시 업데이트
                     window.location.hash = targetTab;
+
+                    // 모바일에서 탭 클릭 시 부드럽게 스크롤
+                    if (window.innerWidth <= 992) {
+                        const tabNavigation = document.querySelector('.tab-navigation');
+                        const tabNavigationTop = tabNavigation.getBoundingClientRect().top + window.pageYOffset;
+                        window.scrollTo({
+                            top: tabNavigationTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
                 });
             });
 
@@ -1058,6 +1141,17 @@
                             icon.classList.add('fa-chevron-right');
                         }
                     });
+                }
+            });
+
+            // 모바일에서 바깥 영역 클릭 시 메뉴 닫기
+            document.addEventListener('click', function(e) {
+                if (window.innerWidth <= 992 && mainMenu.classList.contains('active')) {
+                    if (!e.target.closest('header') && !e.target.closest('.main-menu')) {
+                        mainMenu.classList.remove('active');
+                        menuToggle.querySelector('i').classList.remove('fa-times');
+                        menuToggle.querySelector('i').classList.add('fa-bars');
+                    }
                 }
             });
         });
