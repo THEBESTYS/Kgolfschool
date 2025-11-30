@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>기술특장점 - GVITA</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+        }
+        
+        body {
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* 헤더 스타일 */
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        nav ul li {
+            position: relative;
+            margin: 0 10px;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 15px;
+            display: block;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        nav ul li a:hover {
+            background-color: #34495e;
+        }
+        
+        .sub-menu {
+            display: none;
+            position: absolute;
+            background-color: #34495e;
+            min-width: 200px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            z-index: 1;
+            border-radius: 4px;
+        }
+        
+        .sub-menu li {
+            margin: 0;
+            width: 100%;
+        }
+        
+        .sub-menu a {
+            padding: 12px 15px;
+            border-bottom: 1px solid #3d5166;
+        }
+        
+        nav ul li:hover > .sub-menu {
+            display: block;
+        }
+        
+        /* 기술 섹션 스타일 */
+        .tech-section {
+            padding: 80px 0;
+            scroll-margin-top: 80px;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 2.2rem;
+            color: #2c3e50;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background-color: #3498db;
+        }
+        
+        .tech-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            padding: 40px;
+            margin-bottom: 50px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            overflow: hidden;
+        }
+        
+        .tech-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+        }
+        
+        .tech-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f1f1f1;
+        }
+        
+        .tech-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #3498db, #2c3e50);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 20px;
+            color: white;
+            font-size: 1.8rem;
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+        
+        .tech-name {
+            font-size: 2rem;
+            color: #2c3e50;
+            font-weight: 700;
+        }
+        
+        .tech-content {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 40px;
+        }
+        
+        .tech-text {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .tech-image {
+            flex: 1;
+            min-width: 300px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        
+        .tech-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.5s;
+        }
+        
+        .tech-image:hover img {
+            transform: scale(1.03);
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        
+        .feature-item {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 5px solid #3498db;
+            transition: transform 0.3s;
+        }
+        
+        .feature-item:hover {
+            transform: translateX(5px);
+        }
+        
+        .feature-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #2c3e50;
+            font-size: 1.1rem;
+        }
+        
+        .spec-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .spec-table th {
+            background-color: #3498db;
+            color: white;
+            padding: 15px;
+            text-align: left;
+        }
+        
+        .spec-table td {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .spec-table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        
+        .spec-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .highlight {
+            background: linear-gradient(120deg, #a8e6cf 0%, #a8e6cf 100%);
+            background-repeat: no-repeat;
+            background-size: 100% 40%;
+            background-position: 0 90%;
+        }
+        
+        /* 푸터 스타일 */
+        footer {
+            background-color: #2c3e50;
+            color: white;
+            padding: 40px 0 20px;
+            margin-top: 60px;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+        
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+            margin-bottom: 20px;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-section h3:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background-color: #3498db;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #3d5166;
+            font-size: 0.9rem;
+        }
+        
+        /* 반응형 스타일 */
+        @media (max-width: 768px) {
+            .tech-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .tech-icon {
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+            
+            .tech-content {
+                flex-direction: column;
+            }
+            
+            .tech-text, .tech-image {
+                min-width: 100%;
+            }
+            
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            nav ul {
+                flex-direction: column;
+            }
+            
+            nav ul li {
+                margin: 5px 0;
+            }
+            
+            .sub-menu {
+                position: static;
+                box-shadow: none;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">GVITA</div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">홈</a></li>
+                    <li><a href="product.html">제품소개</a></li>
+                    <li>
+                        <a href="technology.html">기술특장점</a>
+                        <ul class="sub-menu">
+                            <li><a href="#ai">AI 스윙분석</a></li>
+                            <li><a href="#metaverse">메타버스 구현</a></li>
+                            <li><a href="#graphic">최고 해상도</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#">고객지원</a></li>
+                    <li><a href="#">문의하기</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- AI 스윙분석 섹션 -->
+        <section id="ai" class="tech-section">
+            <h2 class="section-title">AI 스윙분석</h2>
+            <div class="tech-card">
+                <div class="tech-header">
+                    <div class="tech-icon">🤖</div>
+                    <h3 class="tech-name">정밀한 AI 기반 스윙 분석 시스템</h3>
+                </div>
+                <div class="tech-content">
+                    <div class="tech-text">
+                        <p>GVITA의 AI 스윙분석 시스템은 초고속 카메라와 HD 모션 카메라를 통해 수집된 데이터를 딥러닝 알고리즘으로 분석하여 프로 선수와 같은 정밀한 피드백을 제공합니다.</p>
+                        
+                        <div class="feature-grid">
+                            <div class="feature-item">
+                                <div class="feature-title">초고속 데이터 수집</div>
+                                <p>초당 1,000프레임의 고속 촬영으로 스윙의 미세한 움직임까지 포착</p>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-title">3D 스윙 트래킹</div>
+                                <p>클럽 헤드의 궤적, 각도, 속도 등 15가지 이상의 파라미터 분석</p>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-title">실시간 피드백</div>
+                                <p>스윙 직후 즉시 분석 결과와 개선점을 시각적으로 제공</p>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-title">맞춤형 코칭</div>
+                                <p>사용자의 스윙 패턴을 학습하여 개인별 최적화된 훈련 프로그램 제공</p>
+                            </div>
+                        </div>
+                        
+                        <table class="spec-table">
+                            <tr>
+                                <th>분석 항목</th>
+                                <th>정밀도</th>
+                            </tr>
+                            <tr>
+                                <td>클럽 헤드 스피드</td>
+                                <td>±0.1km/h</td>
+                            </tr>
+                            <tr>
+                                <td>볼 스피드</td>
+                                <td>±0.05m/s</td>
+                            </tr>
+                            <tr>
+                                <td>발사 각도</td>
+                                <td>±0.1도</td>
+                            </tr>
+                            <tr>
+                                <td>백스핀/사이드스핀</td>
+                                <td>±50rpm</td>
+                            </tr>
+                            <tr>
+                                <td>스윙 궤적</td>
+                                <td>3D 공간에서 ±1cm</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="tech-image">
+                        <img src="https://images.unsplash.com/photo-1594736797933-d0e6e4f6f8e7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="AI 스윙분석 시스템">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 메타버스 구현 섹션 -->
+        <section id="metaverse" class="tech-section">
+            <h2 class="section-title">메타버스 구현</h2>
+            <div class="tech-card">
+                <div class="tech-header">
+                    <div class="tech-icon">🌐</div>
+                    <h3 class="tech-name">실감나는 가상 골프 세계</h3>
+                </div>
+                <div class="tech-content">
+                    <div class="tech-text">
+                        <p>GVITA의 메타버스 구현 기술은 실제와 구분하기 힘든 가상 골프 환경을 제공합니다. 언리얼 엔진 기반의 고급 그래픽과 물리 엔진이 결합되어 현실감 있는 골프 경험을 선사합니다.</p>
+                        
+                        <div class="feature-grid">
+                            <div class="feature-item">
+                                <div class="feature-title">실시간 멀티플레이</div>
+                                <p>전 세계 사용자와 실시간으로 경기하며 소통 가능</p>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-title">개인화된 아바타</div>
+                                <p>사용자의 실제 스윙 데이터를 반영한 맞춤형 아바타 시스템</p>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-title">동적 환경 변화</div>
+                                <p>실제와 같은 바람, 날씨, 시간대 변화 반영</p>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-title">사회적 상호작용</div>
+                                <p>가상 클럽하우스에서 다른 골퍼들과 교류 가능</p>
+                            </div>
+                        </div>
+                        
+                        <p class="highlight">GVITA 메타버스는 단순한 시뮬레이션을 넘어서 사용자들이 실제 골프 커뮤니티를 형성하고 성장할 수 있는 플랫폼을 제공합니다. 90여개의 다양한 코스와 계절별 변화를 경험할 수 있으며, 실제 골프장의 분위기와 디테일을 완벽하게 재현했습니다.</p>
+                    </div>
+                    <div class="tech-image">
+                        <img src="https://images.unsplash.com/photo-1624880357912-46d9e88d44c4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="메타버스 골프 환경">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 최고 해상도 섹션 -->
+        <section id="graphic" class="tech-section">
+            <h2 class="section-title">최고 해상도</h2>
+            <div class="tech-card">
+                <div class="tech-header">
+                    <div class="tech-icon">🖼️</div>
+                    <h3 class="tech-name">초현실적인 그래픽 구현</h3>
+                </div>
+                <div class="tech-content">
+                    <div class="tech-text">
+                        <p>GVITA는 64비트 환경에서 제작된 230만 화소의 초고화질 3D 입체영상을 제공합니다. WUXGA(1920x1200) 해상도를 지원하여 Full HD를 넘어선 선명하고 생생한 화질을 자랑합니다.</p>
+                        
+                        <div class="feature-grid">
+                            <div class="feature-item">
+                                <div class="feature-title">4K UHD 초고화질</div>
+                                <p>기존 FHD에서 4K로 제작하여 생생한 디테일 구현</p>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-title">3D 입체 영상</div>
+                                <p>입체적인 깊이감으로 현장에 있는 듯한 몰입감 제공</p>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-title">HDR 지원</div>
+                                <p>높은 명암비로 자연스러운 색상과 선명한 화질 구현</p>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-title">광시야각</div>
+                                <p>어떤 각도에서도 왜곡 없는 선명한 화면 제공</p>
+                            </div>
+                        </div>
+                        
+                        <table class="spec-table">
+                            <tr>
+                                <th>그래픽 사양</th>
+                                <th>성능</th>
+                            </tr>
+                            <tr>
+                                <td>해상도</td>
+                                <td>WUXGA (1920 x 1200)</td>
+                            </tr>
+                            <tr>
+                                <td>색 재현율</td>
+                                <td>sRGB 100%</td>
+                            </tr>
+                            <tr>
+                                <td>명암비</td>
+                                <td>100,000:1 (동적)</td>
+                            </tr>
+                            <tr>
+                                <td>응답속도</td>
+                                <td>4ms</td>
+                            </tr>
+                            <tr>
+                                <td>주사율</td>
+                                <td>120Hz</td>
+                            </tr>
+                        </table>
+                        
+                        <p class="highlight">GVITA의 그래픽 엔진은 정밀 항공사진 도화 기술을 통해 실제 골프장의 지형을 3D로 정확하게 재현합니다. 골프장 주변 전경 10km 밖까지 3D로 제작하여 실제와 같은 원경을 제공합니다. 또한 4만 개 이상의 자체 제작 3D 오브젝트를 활용하여 현실감을 극대화했습니다.</p>
+                    </div>
+                    <div class="tech-image">
+                        <img src="https://images.unsplash.com/photo-1535131749006-b7f9c2e0e8a3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="고해상도 골프 그래픽">
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>GVITA</h3>
+                    <p>최고의 파크 골프 경험을 제공하는 GVITA 시뮬레이터</p>
+                </div>
+                <div class="footer-section">
+                    <h3>연락처</h3>
+                    <p>전화: 010-2723-5010</p>
+                    <p>이메일: info@gvita.co.kr</p>
+                </div>
+                <div class="footer-section">
+                    <h3>주소</h3>
+                    <p>서울 금천구 가산디지털2로 34</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 GVITA. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 모바일 메뉴 클릭 시 내용 가리지 않도록 조정
+        document.addEventListener('DOMContentLoaded', function() {
+            const navLinks = document.querySelectorAll('nav a');
+            
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    if (window.innerWidth <= 768) {
+                        const targetId = this.getAttribute('href');
+                        if (targetId && targetId.startsWith('#')) {
+                            e.preventDefault();
+                            const targetElement = document.querySelector(targetId);
+                            if (targetElement) {
+                                // 헤더 높이만큼 여유를 두고 스크롤
+                                const headerHeight = document.querySelector('header').offsetHeight;
+                                const targetPosition = targetElement.offsetTop - headerHeight - 20;
+                                
+                                window.scrollTo({
+                                    top: targetPosition,
+                                    behavior: 'smooth'
+                                });
+                                
+                                // 모바일에서 서브메뉴 닫기
+                                const subMenu = this.closest('li').querySelector('.sub-menu');
+                                if (subMenu) {
+                                    subMenu.style.display = 'none';
+                                }
+                            }
+                        }
+                    }
+                });
+            });
+            
+            // 모바일에서 섹션으로 이동 후 URL 업데이트
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.5
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        history.replaceState(null, null, `#${entry.target.id}`);
+                    }
+                });
+            }, observerOptions);
+            
+            document.querySelectorAll('.tech-section').forEach(section => {
+                observer.observe(section);
+            });
+        });
+    </script>
+</body>
+</html>
