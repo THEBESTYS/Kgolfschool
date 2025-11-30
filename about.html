@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>비전 - GVITA AI 골프 시뮬레이션</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* 기본 스타일 - 메인 페이지와 동일하게 유지 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+        }
+
+        body {
+            background-color: #f8fdf8;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* 헤더 스타일 - 메인 페이지와 동일 */
+        header {
+            background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+            color: white;
+            padding: 15px 0;
+            box-shadow: 0 2px 15px rgba(46, 204, 113, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-img {
+            height: 50px;
+            width: auto;
+            border: 2px solid #fff;
+            border-radius: 8px;
+            padding: 5px;
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo-text {
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: #fff;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .logo-text span {
+            color: #f1c40f;
+        }
+
+        .contact-info {
+            font-size: 14px;
+            display: flex;
+            gap: 20px;
+        }
+
+        .contact-info i {
+            margin-right: 5px;
+            color: #f1c40f;
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        /* 네비게이션 스타일 */
+        nav {
+            padding-top: 15px;
+        }
+
+        .main-menu {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .main-menu > li {
+            position: relative;
+        }
+
+        .main-menu > li > a {
+            display: block;
+            padding: 12px 20px;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            border-radius: 6px;
+        }
+
+        .main-menu > li > a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: #f1c40f;
+            transform: translateY(-2px);
+        }
+
+        .sub-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: white;
+            min-width: 200px;
+            box-shadow: 0 5px 20px rgba(46, 204, 113, 0.15);
+            border-radius: 8px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+            z-index: 100;
+            border: 1px solid #e8f5e9;
+        }
+
+        .main-menu > li:hover .sub-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .sub-menu li a {
+            display: block;
+            padding: 12px 20px;
+            color: #2c3e50;
+            border-bottom: 1px solid #f1f8e9;
+            transition: all 0.3s ease;
+        }
+
+        .sub-menu li:last-child a {
+            border-bottom: none;
+        }
+
+        .sub-menu li a:hover {
+            background-color: #e8f5e9;
+            color: #27ae60;
+            padding-left: 25px;
+        }
+
+        /* 비전 페이지 전용 스타일 */
+        .page-header {
+            background: linear-gradient(135deg, rgba(39, 174, 96, 0.9), rgba(46, 204, 113, 0.9)), 
+                        url('https://images.unsplash.com/photo-1541140532154-b024d705b90a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 100px 0;
+            text-align: center;
+        }
+
+        .page-header h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .page-header p {
+            font-size: 20px;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .vision-content {
+            padding: 80px 0;
+        }
+
+        .vision-section {
+            margin-bottom: 60px;
+        }
+
+        .vision-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .vision-card {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(46, 204, 113, 0.1);
+            border: 1px solid #e8f5e9;
+            margin-bottom: 30px;
+            transition: transform 0.3s ease;
+        }
+
+        .vision-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .vision-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+            color: white;
+            font-size: 32px;
+        }
+
+        .vision-card h3 {
+            font-size: 28px;
+            color: #27ae60;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .vision-card p {
+            color: #555;
+            font-size: 16px;
+            line-height: 1.8;
+            text-align: center;
+        }
+
+        .mission-values {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .mission-box {
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            color: white;
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .mission-box h3 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .mission-box p {
+            font-size: 16px;
+            line-height: 1.7;
+        }
+
+        .values-box {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            border: 2px solid #27ae60;
+            text-align: center;
+        }
+
+        .values-box h3 {
+            font-size: 24px;
+            color: #27ae60;
+            margin-bottom: 20px;
+        }
+
+        .values-list {
+            text-align: left;
+        }
+
+        .values-list li {
+            margin-bottom: 15px;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .values-list li:before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #27ae60;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        /* 푸터 스타일 - 메인 페이지와 동일 */
+        footer {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: #ecf0f1;
+            padding: 60px 0 20px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-column h3 {
+            color: white;
+            font-size: 18px;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-column h3:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background-color: #2ecc71;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column ul li a:hover {
+            color: #2ecc71;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #34495e;
+            font-size: 14px;
+            color: #bdc3c7;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background-color: #34495e;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 40px;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background-color: #2ecc71;
+            transform: translateY(-3px);
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .footer-logo-img {
+            height: 40px;
+            width: auto;
+            border: 2px solid #2ecc71;
+            border-radius: 6px;
+            padding: 3px;
+            background-color: white;
+        }
+
+        .footer-logo-text {
+            font-size: 22px;
+            font-weight: 700;
+            color: white;
+        }
+
+        .footer-logo-text span {
+            color: #2ecc71;
+        }
+
+        /* 대체 이미지 스타일 */
+        .placeholder-img {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            border-radius: 6px;
+        }
+
+        /* 반응형 스타일 */
+        @media (max-width: 992px) {
+            .menu-toggle {
+                display: block;
+            }
+            
+            .main-menu {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+                box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+                z-index: 1000;
+                max-height: 70vh;
+                overflow-y: auto;
+            }
+            
+            .main-menu.active {
+                display: flex;
+            }
+            
+            .page-header h1 {
+                font-size: 36px;
+            }
+            
+            .page-header p {
+                font-size: 18px;
+            }
+            
+            .vision-card {
+                padding: 30px;
+            }
+            
+            .mission-values {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-top {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .logo-container {
+                flex-direction: column;
+                text-align: center;
+                gap: 10px;
+            }
+            
+            .contact-info {
+                flex-direction: column;
+                gap: 5px;
+                text-align: center;
+                font-size: 12px;
+            }
+            
+            .page-header {
+                padding: 60px 0;
+            }
+            
+            .vision-content {
+                padding: 50px 0;
+            }
+            
+            .vision-card h3 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 헤더 -->
+    <header>
+        <div class="container">
+            <div class="header-top">
+                <div class="logo-container">
+                    <img src="images/GVITA(1).png" alt="GVITA CI" class="logo-img" onerror="this.style.display='none'; document.getElementById('logo-placeholder').style.display='flex';">
+                    <div id="logo-placeholder" class="logo-img placeholder-img" style="display:none;">
+                        GVITA
+                    </div>
+                    <div class="logo-text">G<span>VITA</span></div>
+                </div>
+                <div class="contact-info">
+                    <div><i class="fas fa-phone"></i> 010-2723-5010</div>
+                    <div><i class="fas fa-user"></i> 대표: 김선호</div>
+                </div>
+                <button class="menu-toggle" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            <nav>
+                <ul class="main-menu" id="mainMenu">
+                    <li><a href="index.html">홈</a></li>
+                    <li>
+                        <a href="about.html" class="has-submenu">회사소개 <i class="fas fa-chevron-down"></i></a>
+                        <ul class="sub-menu">
+                            <li><a href="about.html#vision">비전</a></li>
+                            <li><a href="about.html#history">연혁</a></li>
+                            <li><a href="about.html#ci">CI소개</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="product.html" class="has-submenu">제품소개 <i class="fas fa-chevron-down"></i></a>
+                        <ul class="sub-menu">
+                            <li>
+                                <a href="product.html#gvita-pro" class="has-submenu">GVITA PRO <i class="fas fa-chevron-right"></i></a>
+                                <ul class="sub-sub-menu">
+                                    <li><a href="product.html#spec">사양</a></li>
+                                    <li><a href="product.html#function">주요기능</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="product.html#gvita-lite">GVITA LITE</a></li>
+                            <li><a href="product.html#accessory">주요부속</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="technology.html" class="has-submenu">기술특장점 <i class="fas fa-chevron-down"></i></a>
+                        <ul class="sub-menu">
+                            <li><a href="technology.html#ai">AI 스윙분석</a></li>
+                            <li><a href="technology.html#metaverse">메타버스 구현</a></li>
+                            <li><a href="technology.html#graphic">최고 해상도</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="business.html" class="has-submenu">사업소개 <i class="fas fa-chevron-down"></i></a>
+                        <ul class="sub-menu">
+                            <li><a href="business.html#domestic">국내사업</a></li>
+                            <li><a href="business.html#global">해외사업</a></li>
+                            <li><a href="business.html#partnership">제휴문의</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="support.html">고객지원</a></li>
+                    <li><a href="contact.html">문의하기</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 페이지 헤더 -->
+    <section class="page-header">
+        <div class="container">
+            <h1>GVITA 비전</h1>
+            <p>AI 기술과 혁신을 통해 골프의 미래를 선도하는 글로벌 리더</p>
+        </div>
+    </section>
+
+    <!-- 비전 콘텐츠 -->
+    <section class="vision-content" id="vision">
+        <div class="container">
+            <div class="vision-section">
+                <div class="vision-card">
+                    <div class="vision-icon">
+                        <i class="fas fa-bullseye"></i>
+                    </div>
+                    <h3>미션</h3>
+                    <p>
+                        GVITA는 최첨단 AI 기술과 메타버스 플랫폼을 접목하여<br>
+                        누구나, 언제든지, 어디서나 전문가 수준의 골프 경험을 누릴 수 있는<br>
+                        혁신적인 골프 시뮬레이션 솔루션을 제공합니다.
+                    </p>
+                </div>
+            </div>
+
+            <div class="vision-section">
+                <h2 style="text-align: center; color: #27ae60; margin-bottom: 40px; font-size: 32px;">핵심 가치</h2>
+                <div class="mission-values">
+                    <div class="mission-box">
+                        <h3>혁신 Innovation</h3>
+                        <p>AI 기술과 메타버스의 융합을 통해 기존의 한계를 뛰어넘는 차별화된 골프 경험을 창조합니다.</p>
+                    </div>
+                    <div class="values-box">
+                        <h3>핵심 가치</h3>
+                        <ul class="values-list">
+                            <li><strong>고객 중심:</strong> 사용자의 Needs를 최우선으로 생각합니다</li>
+                            <li><strong>기술 혁신:</strong> 지속적인 R&D를 통해 최고의 기술을 개발합니다</li>
+                            <li><strong>품질 우선:</strong> 모든 제품과 서비스에 최고의 품질을 담습니다</li>
+                            <li><strong>글로벌 마인드:</strong> 세계 시장을 향해 끊임없이 도전합니다</li>
+                            <li><strong>지속 가능성:</strong 환경과 사회에 기여하는 기업을 지향합니다</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="vision-section">
+                <div class="vision-card">
+                    <div class="vision-icon">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <h3>비전 2027</h3>
+                    <p>
+                        <strong>"글로벌 프리미엄 골프 테크놀로지 리더"</strong><br><br>
+                        2027년까지 아시아 최고의 골프 시뮬레이션 기업으로 성장하고,<br>
+                        AI 기반 골프 코칭 시스템 분야에서 세계 시장 점유율 1위를 달성하며,<br>
+                        전 세계 50개국 이상에 GVITA의 혁신 기술을 보급하는 것을 목표로 합니다.
+                    </p>
+                </div>
+            </div>
+
+            <div class="vision-section">
+                <div class="vision-card">
+                    <div class="vision-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>전략적 목표</h3>
+                    <p>
+                        <strong>기술 리더십:</strong> AI 골프 분석 기술에서 세계 최고 수준 달성<br>
+                        <strong>시장 확대:</strong> 국내 30%, 글로벌 15% 시장 점유율 목표<br>
+                        <strong>고객 가치:</strong> 사용자 만족도 95% 이상 유지<br>
+                        <strong>지속 성장:</strong> 매년 40% 이상의 성장률 달성<br>
+                        <strong>글로벌 영향력:</strong> 세계 골프 테크놀로지 표준 주도
+                    </p>
+                </div>
+            </div>
+
+            <div class="vision-section">
+                <div class="vision-card">
+                    <div class="vision-icon">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <h3>사회적 책임</h3>
+                    <p>
+                        GVITA는 단순한 기술 기업을 넘어 골프 문화의 발전과<br>
+                        건강한 스포츠 라이프스타일 확산에 기여하는 것을 사명으로 합니다.<br><br>
+                        
+                        <strong>청소년 골프 발전:</strong> 차세대 골퍼 양성을 위한 교육 프로그램 지원<br>
+                        <strong>장애인 골프 보급:</strong> 모든 사람이 즐길 수 있는 골프 환경 조성<br>
+                        <strong>지역 사회 공헌:</strong> 지역 사회와 상생하는 기업 시민 정신 실천<br>
+                        <strong>환경 보호:</strong> 친환경 기술 개발과 지속 가능한 성장 추구
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 푸터 -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <div class="footer-logo">
+                        <img src="images/GVITA(1).png" alt="GVITA CI" class="footer-logo-img" onerror="this.style.display='none'; document.getElementById('footer-logo-placeholder').style.display='flex';">
+                        <div id="footer-logo-placeholder" class="footer-logo-img placeholder-img" style="display:none;">
+                            GVITA
+                        </div>
+                        <div class="footer-logo-text">G<span>VITA</span></div>
+                    </div>
+                    <p>AI 기반 프리미엄 골프 시뮬레이션으로 새로운 골프 경험을 제공합니다.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fab fa-blog"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>제품</h3>
+                    <ul>
+                        <li><a href="product.html#gvita-pro">GVITA PRO</a></li>
+                        <li><a href="product.html#gvita-lite">GVITA LITE</a></li>
+                        <li><a href="product.html#accessory">주요 부속</a></li>
+                        <li><a href="technology.html">기술 특장점</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>회사</h3>
+                    <ul>
+                        <li><a href="about.html">회사 소개</a></li>
+                        <li><a href="about.html#vision">비전</a></li>
+                        <li><a href="about.html#history">연혁</a></li>
+                        <li><a href="business.html">사업 소개</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>연락처</h3>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt"></i> 경기도 부천시 원미구 조마루로 385번길 20 신호시스템 빌딩 2층</li>
+                        <li><i class="fas fa-phone"></i> 010-2723-5010</li>
+                        <li><i class="fas fa-user"></i> 대표: 김선호</li>
+                        <li><i class="fas fa-envelope"></i> contact@gvita.com</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>Copyright &copy; 2023 GVITA. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 모바일 메뉴 토글 기능
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuToggle = document.getElementById('menuToggle');
+            const mainMenu = document.getElementById('mainMenu');
+            
+            menuToggle.addEventListener('click', function() {
+                mainMenu.classList.toggle('active');
+                const icon = this.querySelector('i');
+                if (mainMenu.classList.contains('active')) {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-times');
+                } else {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            });
+            
+            // 서브메뉴 토글 기능
+            const submenuToggles = document.querySelectorAll('.has-submenu');
+            
+            submenuToggles.forEach(toggle => {
+                toggle.addEventListener('click', function(e) {
+                    if (window.innerWidth <= 992) {
+                        e.preventDefault();
+                        const submenu = this.nextElementSibling;
+                        if (submenu) {
+                            submenu.classList.toggle('active');
+                            
+                            const icon = this.querySelector('i');
+                            if (submenu.classList.contains('active')) {
+                                if (icon.classList.contains('fa-chevron-down')) {
+                                    icon.classList.remove('fa-chevron-down');
+                                    icon.classList.add('fa-chevron-up');
+                                } else if (icon.classList.contains('fa-chevron-right')) {
+                                    icon.classList.remove('fa-chevron-right');
+                                    icon.classList.add('fa-chevron-left');
+                                }
+                            } else {
+                                if (icon.classList.contains('fa-chevron-up')) {
+                                    icon.classList.remove('fa-chevron-up');
+                                    icon.classList.add('fa-chevron-down');
+                                } else if (icon.classList.contains('fa-chevron-left')) {
+                                    icon.classList.remove('fa-chevron-left');
+                                    icon.classList.add('fa-chevron-right');
+                                }
+                            }
+                        }
+                    }
+                });
+            });
+            
+            // 화면 크기 변경 시 메뉴 초기화
+            window.addEventListener('resize', function() {
+                if (window.innerWidth > 992) {
+                    mainMenu.classList.remove('active');
+                    menuToggle.querySelector('i').classList.remove('fa-times');
+                    menuToggle.querySelector('i').classList.add('fa-bars');
+                    
+                    document.querySelectorAll('.sub-menu, .sub-sub-menu').forEach(menu => {
+                        menu.classList.remove('active');
+                    });
+                    
+                    document.querySelectorAll('.has-submenu i').forEach(icon => {
+                        if (icon.classList.contains('fa-chevron-up')) {
+                            icon.classList.remove('fa-chevron-up');
+                            icon.classList.add('fa-chevron-down');
+                        }
+                        if (icon.classList.contains('fa-chevron-left')) {
+                            icon.classList.remove('fa-chevron-left');
+                            icon.classList.add('fa-chevron-right');
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
