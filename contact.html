@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>문의하기 - GVITA</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+        }
+        
+        body {
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* 헤더 스타일 */
+        header {
+            background-color: rgba(44, 62, 80, 0.95);
+            color: white;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        nav ul li {
+            margin: 0 10px;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 15px;
+            display: block;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+        
+        nav ul li a:hover {
+            background-color: #3498db;
+            transform: translateY(-2px);
+        }
+        
+        /* 문의하기 섹션 스타일 */
+        .contact-section {
+            padding: 80px 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+        
+        .contact-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            align-items: stretch;
+        }
+        
+        .contact-info {
+            flex: 1;
+            min-width: 300px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .contact-form-container {
+            flex: 1;
+            min-width: 300px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 2.5rem;
+            color: #2c3e50;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(135deg, #3498db, #2c3e50);
+            border-radius: 2px;
+        }
+        
+        .contact-method {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            transition: all 0.3s;
+            border-left: 4px solid #3498db;
+        }
+        
+        .contact-method:hover {
+            transform: translateX(10px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .contact-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #3498db, #2c3e50);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 20px;
+            color: white;
+            font-size: 1.5rem;
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+        
+        .contact-details h3 {
+            color: #2c3e50;
+            margin-bottom: 5px;
+            font-size: 1.3rem;
+        }
+        
+        .contact-details p {
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .highlight {
+            color: #3498db;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        
+        .office-hours {
+            background: linear-gradient(135deg, #3498db, #2c3e50);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-top: 30px;
+            text-align: center;
+            box-shadow: 0 10px 20px rgba(52, 152, 219, 0.3);
+        }
+        
+        .office-hours h3 {
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+        
+        .office-hours p {
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+        
+        /* 폼 스타일 */
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #2c3e50;
+            font-size: 1.1rem;
+        }
+        
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e1e1e1;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            background: #f8f9fa;
+        }
+        
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+            background: white;
+            transform: translateY(-2px);
+        }
+        
+        .form-group textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+        
+        .submit-btn {
+            background: linear-gradient(135deg, #3498db, #2c3e50);
+            color: white;
+            border: none;
+            padding: 18px 40px;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: block;
+            width: 100%;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(52, 152, 219, 0.4);
+        }
+        
+        .submit-btn:active {
+            transform: translateY(-1px);
+        }
+        
+        .form-note {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        /* 지도 및 위치 정보 */
+        .location-section {
+            padding: 80px 0;
+        }
+        
+        .location-container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .location-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .location-card {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 12px;
+            border-left: 4px solid #3498db;
+            transition: all 0.3s;
+        }
+        
+        .location-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .location-card h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+        
+        .location-card p {
+            margin-bottom: 10px;
+            color: #555;
+        }
+        
+        .map-placeholder {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            height: 300px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            margin-top: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        
+        /* 푸터 스타일 */
+        footer {
+            background-color: rgba(44, 62, 80, 0.95);
+            color: white;
+            padding: 40px 0 20px;
+            margin-top: 60px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+        
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+            margin-bottom: 20px;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-section h3:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background-color: #3498db;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #3d5166;
+            font-size: 0.9rem;
+        }
+        
+        /* 반응형 스타일 */
+        @media (max-width: 768px) {
+            .contact-container {
+                flex-direction: column;
+            }
+            
+            .contact-info, .contact-form-container {
+                min-width: 100%;
+            }
+            
+            .contact-method {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .contact-icon {
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+            
+            .location-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            nav ul {
+                flex-direction: column;
+            }
+            
+            nav ul li {
+                margin: 5px 0;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+        
+        /* 애니메이션 */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .fade-in {
+            animation: fadeInUp 0.6s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">GVITA</div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">홈</a></li>
+                    <li><a href="product.html">제품소개</a></li>
+                    <li><a href="technology.html">기술특장점</a></li>
+                    <li><a href="business.html">사업소개</a></li>
+                    <li><a href="support.html">고객지원</a></li>
+                    <li><a href="contact.html">문의하기</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- 문의하기 섹션 -->
+        <section class="contact-section">
+            <div class="contact-container fade-in">
+                <div class="contact-info">
+                    <h2 class="section-title">문의하기</h2>
+                    <p style="text-align: center; margin-bottom: 30px; color: #666; font-size: 1.1rem;">
+                        GVITA 파크골프에 대한 모든 문의를 친절하게 안내해 드립니다.<br>
+                        아래 연락처로 직접 연락하시거나 온라인 문의를 이용해 주세요.
+                    </p>
+                    
+                    <div class="contact-method">
+                        <div class="contact-icon">📞</div>
+                        <div class="contact-details">
+                            <h3>전화 문의</h3>
+                            <p class="highlight">1544-3323</p>
+                            <p>전문 상담사가 직접 응대합니다</p>
+                            <p>평일 09:00 ~ 18:00</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-method">
+                        <div class="contact-icon">✉️</div>
+                        <div class="contact-details">
+                            <h3>이메일 문의</h3>
+                            <p class="highlight">contact@gvita.co.kr</p>
+                            <p>24시간 접수 가능</p>
+                            <p>24시간 내 답변 드립니다</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-method">
+                        <div class="contact-icon">💬</div>
+                        <div class="contact-details">
+                            <h3>카카오톡 상담</h3>
+                            <p class="highlight">@GVITA</p>
+                            <p>실시간 1:1 채팅 상담</p>
+                            <p>평일 09:00 ~ 22:00</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-method">
+                        <div class="contact-icon">🏢</div>
+                        <div class="contact-details">
+                            <h3>방문 상담</h3>
+                            <p class="highlight">사전 예약제</p>
+                            <p>전국 서비스 센터 방문 가능</p>
+                            <p>체험 및 상담 동시 진행</p>
+                        </div>
+                    </div>
+                    
+                    <div class="office-hours">
+                        <h3>🏢 운영 시간</h3>
+                        <p><strong>평일:</strong> 09:00 ~ 18:00</p>
+                        <p><strong>점심시간:</strong> 12:00 ~ 13:00</p>
+                        <p><strong>토요일:</strong> 09:00 ~ 13:00</p>
+                        <p><strong>일요일/공휴일:</strong> 휴무</p>
+                    </div>
+                </div>
+                
+                <div class="contact-form-container fade-in">
+                    <h2 class="section-title">온라인 문의</h2>
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <label for="name">이름 *</label>
+                            <input type="text" id="name" name="name" required placeholder="성함을 입력해주세요">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="phone">연락처 *</label>
+                            <input type="tel" id="phone" name="phone" required placeholder="연락처를 입력해주세요">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">이메일 *</label>
+                            <input type="email" id="email" name="email" required placeholder="이메일을 입력해주세요">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="company">회사/기관명</label>
+                            <input type="text" id="company" name="company" placeholder="소속 회사 또는 기관명">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="inquiry-type">문의 유형 *</label>
+                            <select id="inquiry-type" name="inquiry-type" required>
+                                <option value="">선택해주세요</option>
+                                <option value="product">제품 문의</option>
+                                <option value="quotation">견적 문의</option>
+                                <option value="install">설치 문의</option>
+                                <option value="as">A/S 문의</option>
+                                <option value="partnership">제휴 문의</option>
+                                <option value="demo">체험 신청</option>
+                                <option value="etc">기타 문의</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="product-type">관심 제품</label>
+                            <select id="product-type" name="product-type">
+                                <option value="">선택해주세요</option>
+                                <option value="gvita-pro">GVITA PRO</option>
+                                <option value="gvita-lite">GVITA LITE</option>
+                                <option value="both">전체 제품</option>
+                                <option value="etc">기타</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="message">문의 내용 *</label>
+                            <textarea id="message" name="message" required placeholder="문의하실 내용을 상세히 작성해주세요.&#10;보다 정확한 답변을 드릴 수 있습니다."></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" name="privacy" required>
+                                개인정보 수집 및 이용에 동의합니다
+                            </label>
+                        </div>
+                        
+                        <button type="submit" class="submit-btn">
+                            📧 문의 보내기
+                        </button>
+                        
+                        <p class="form-note">
+                            * 표시된 항목은 필수 입력사항입니다.<br>
+                            문의해주신 내용은 영업일 기준 24시간 내에 답변드리겠습니다.
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- 위치 정보 섹션 -->
+        <section class="location-section">
+            <div class="location-container fade-in">
+                <h2 class="section-title">오시는 길</h2>
+                
+                <div class="location-grid">
+                    <div class="location-card">
+                        <h3>📍 본사</h3>
+                        <p><strong>주소:</strong> 서울 금천구 가산디지털2로 34</p>
+                        <p><strong>전화:</strong> 02-1234-5678</p>
+                        <p><strong>이메일:</strong> seoul@gvita.co.kr</p>
+                        <p><strong>역:</strong> 가산디지털단지역 5번 출구</p>
+                    </div>
+                    
+                    <div class="location-card">
+                        <h3>📍 레저사업본부</h3>
+                        <p><strong>주소:</strong> 부산광역시 해운대구 송정광어골로 82</p>
+                        <p><strong>전화:</strong> 051-710-3323</p>
+                        <p><strong>이메일:</strong> busan@gvita.co.kr</p>
+                        <p><strong>역:</strong> 송정역 1번 출구</p>
+                    </div>
+                    
+                    <div class="location-card">
+                        <h3>📍 미국 본사</h3>
+                        <p><strong>주소:</strong> 1305 ORANGE AVE BEAUMONT CA. 92223</p>
+                        <p><strong>전화:</strong> +1-951-765-4321</p>
+                        <p><strong>이메일:</strong> usa@gvita.co.kr</p>
+                        <p><strong>언어:</strong> 영어/한국어 상담 가능</p>
+                    </div>
+                </div>
+                
+                <div class="map-placeholder">
+                    🗺️ 인터랙티브 지도가 여기에 표시됩니다
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>GVITA</h3>
+                    <p>최고의 파크 골프 경험을 제공하는 GVITA 시뮬레이터</p>
+                </div>
+                <div class="footer-section">
+                    <h3>연락처</h3>
+                    <p>전화: 010-2723-5010</p>
+                    <p>이메일: info@gvita.co.kr</p>
+                </div>
+                <div class="footer-section">
+                    <h3>주소</h3>
+                    <p>서울 금천구 가산디지털2로 34</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 GVITA. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 모바일 메뉴 클릭 시 내용 가리지 않도록 조정
+        document.addEventListener('DOMContentLoaded', function() {
+            const navLinks = document.querySelectorAll('nav a');
+            
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    if (window.innerWidth <= 768) {
+                        const targetId = this.getAttribute('href');
+                        if (targetId && targetId.startsWith('#')) {
+                            e.preventDefault();
+                            const targetElement = document.querySelector(targetId);
+                            if (targetElement) {
+                                // 헤더 높이만큼 여유를 두고 스크롤
+                                const headerHeight = document.querySelector('header').offsetHeight;
+                                const targetPosition = targetElement.offsetTop - headerHeight - 20;
+                                
+                                window.scrollTo({
+                                    top: targetPosition,
+                                    behavior: 'smooth'
+                                });
+                            }
+                        }
+                    }
+                });
+            });
+            
+            // 문의 폼 처리
+            const contactForm = document.getElementById('contactForm');
+            if (contactForm) {
+                contactForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    // 간단한 폼 유효성 검사
+                    const name = document.getElementById('name').value;
+                    const email = document.getElementById('email').value;
+                    const phone = document.getElementById('phone').value;
+                    const inquiryType = document.getElementById('inquiry-type').value;
+                    const message = document.getElementById('message').value;
+                    
+                    if (!name || !email || !phone || !inquiryType || !message) {
+                        alert('필수 항목을 모두 입력해주세요.');
+                        return;
+                    }
+                    
+                    // 성공 메시지
+                    const successMessage = `
+                        ✅ 문의가 성공적으로 접수되었습니다!
+                        
+                        이름: ${name}
+                        연락처: ${phone}
+                        이메일: ${email}
+                        문의유형: ${document.getElementById('inquiry-type').options[document.getElementById('inquiry-type').selectedIndex].text}
+                        
+                        영업일 기준 24시간 내로 담당자가 연락드리겠습니다.
+                        감사합니다.
+                    `;
+                    
+                    alert(successMessage);
+                    contactForm.reset();
+                    
+                    // 성공 애니메이션
+                    const submitBtn = contactForm.querySelector('.submit-btn');
+                    submitBtn.textContent = '✅ 문의 완료!';
+                    submitBtn.style.background = 'linear-gradient(135deg, #27ae60, #2ecc71)';
+                    
+                    setTimeout(() => {
+                        submitBtn.textContent = '📧 문의 보내기';
+                        submitBtn.style.background = 'linear-gradient(135deg, #3498db, #2c3e50)';
+                    }, 3000);
+                });
+            }
+            
+            // 스크롤 애니메이션
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('fade-in');
+                    }
+                });
+            }, observerOptions);
+            
+            document.querySelectorAll('.contact-container, .location-container').forEach(element => {
+                observer.observe(element);
+            });
+            
+            // 폼 필드 포커스 효과
+            const formInputs = document.querySelectorAll('input, select, textarea');
+            formInputs.forEach(input => {
+                input.addEventListener('focus', function() {
+                    this.parentElement.classList.add('focused');
+                });
+                
+                input.addEventListener('blur', function() {
+                    this.parentElement.classList.remove('focused');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
