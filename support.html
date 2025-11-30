@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>고객지원 - GVITA</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+        }
+        
+        body {
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* 헤더 스타일 */
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        nav ul li {
+            position: relative;
+            margin: 0 10px;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 15px;
+            display: block;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        nav ul li a:hover {
+            background-color: #34495e;
+        }
+        
+        .sub-menu {
+            display: none;
+            position: absolute;
+            background-color: #34495e;
+            min-width: 200px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            z-index: 1;
+            border-radius: 4px;
+        }
+        
+        .sub-menu li {
+            margin: 0;
+            width: 100%;
+        }
+        
+        .sub-menu a {
+            padding: 12px 15px;
+            border-bottom: 1px solid #3d5166;
+        }
+        
+        nav ul li:hover > .sub-menu {
+            display: block;
+        }
+        
+        /* 지원 섹션 스타일 */
+        .support-section {
+            padding: 80px 0;
+            scroll-margin-top: 80px;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 2.2rem;
+            color: #2c3e50;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background-color: #3498db;
+        }
+        
+        .support-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            padding: 40px;
+            margin-bottom: 50px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            overflow: hidden;
+        }
+        
+        .support-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+        }
+        
+        .support-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f1f1f1;
+        }
+        
+        .support-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #3498db, #2c3e50);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 20px;
+            color: white;
+            font-size: 1.8rem;
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+        
+        .support-name {
+            font-size: 2rem;
+            color: #2c3e50;
+            font-weight: 700;
+        }
+        
+        .support-content {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-start;
+            gap: 40px;
+        }
+        
+        .support-text {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .support-image {
+            flex: 1;
+            min-width: 300px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        
+        .support-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.5s;
+        }
+        
+        .support-image:hover img {
+            transform: scale(1.03);
+        }
+        
+        .service-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+        
+        .service-item {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 8px;
+            border-left: 5px solid #3498db;
+            transition: transform 0.3s;
+            text-align: center;
+        }
+        
+        .service-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .service-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: #3498db;
+        }
+        
+        .service-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #2c3e50;
+            font-size: 1.2rem;
+        }
+        
+        .faq-list {
+            margin: 30px 0;
+        }
+        
+        .faq-item {
+            background: white;
+            border: 1px solid #e1e1e1;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+        }
+        
+        .faq-question {
+            padding: 20px;
+            background: #f8f9fa;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.3s;
+        }
+        
+        .faq-question:hover {
+            background: #e9ecef;
+        }
+        
+        .faq-answer {
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+        
+        .faq-item.active .faq-answer {
+            padding: 20px;
+            max-height: 500px;
+        }
+        
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+        
+        .contact-item {
+            background: linear-gradient(135deg, #3498db, #2c3e50);
+            color: white;
+            padding: 30px 20px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+            transition: transform 0.3s;
+        }
+        
+        .contact-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .contact-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+        
+        .contact-title {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        
+        .download-list {
+            margin: 20px 0;
+        }
+        
+        .download-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            transition: background-color 0.3s;
+        }
+        
+        .download-item:hover {
+            background: #e9ecef;
+        }
+        
+        .download-btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .download-btn:hover {
+            background: #2980b9;
+        }
+        
+        .support-form {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 8px;
+            margin-top: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+        
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .submit-btn {
+            background: linear-gradient(135deg, #3498db, #2c3e50);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 4px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: block;
+            width: 100%;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+        }
+        
+        .map-container {
+            margin-top: 30px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        /* 푸터 스타일 */
+        footer {
+            background-color: #2c3e50;
+            color: white;
+            padding: 40px 0 20px;
+            margin-top: 60px;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+        
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+            margin-bottom: 20px;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-section h3:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background-color: #3498db;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #3d5166;
+            font-size: 0.9rem;
+        }
+        
+        /* 반응형 스타일 */
+        @media (max-width: 768px) {
+            .support-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .support-icon {
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+            
+            .support-content {
+                flex-direction: column;
+            }
+            
+            .support-text, .support-image {
+                min-width: 100%;
+            }
+            
+            .service-grid, .contact-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            nav ul {
+                flex-direction: column;
+            }
+            
+            nav ul li {
+                margin: 5px 0;
+            }
+            
+            .sub-menu {
+                position: static;
+                box-shadow: none;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">GVITA</div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">홈</a></li>
+                    <li><a href="product.html">제품소개</a></li>
+                    <li><a href="technology.html">기술특장점</a></li>
+                    <li><a href="business.html">사업소개</a></li>
+                    <li><a href="support.html">고객지원</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- A/S 서비스 섹션 -->
+        <section id="as-service" class="support-section">
+            <h2 class="section-title">A/S 서비스</h2>
+            <div class="support-card">
+                <div class="support-header">
+                    <div class="support-icon">🔧</div>
+                    <h3 class="support-name">전문 기술지원 및 수리 서비스</h3>
+                </div>
+                <div class="support-content">
+                    <div class="support-text">
+                        <p>GVITA는 설치된 모든 파크골프 시설에 대해 전문적인 A/S 서비스를 제공합니다. 빠른 현장 방문과 정확한 진단으로 고객의 소중한 시간을 절약해 드립니다.</p>
+                        
+                        <div class="service-grid">
+                            <div class="service-item">
+                                <div class="service-icon">🚗</div>
+                                <div class="service-title">신속 현장 방문</div>
+                                <p>전국 네트워크를 통한 48시간 이내 현장 방문 서비스</p>
+                            </div>
+                            <div class="service-item">
+                                <div class="service-icon">🛠️</div>
+                                <div class="service-title">전문 기술 진단</div>
+                                <p>공인 기술자가 정확한 문제 진단과 해결책 제시</p>
+                            </div>
+                            <div class="service-item">
+                                <div class="service-icon">📞</div>
+                                <div class="service-title">원격 지원</div>
+                                <p>전화 및 원격 접속을 통한 즉각적인 문제 해결</p>
+                            </div>
+                            <div class="service-item">
+                                <div class="service-icon">🔄</div>
+                                <div class="service-title">부품 교체</div>
+                                <p>정품 부품을 사용한 신속한 교체 및 수리</p>
+                            </div>
+                        </div>
+                        
+                        <h4>서비스 이용 절차</h4>
+                        <ol style="margin: 20px 0; padding-left: 20px;">
+                            <li style="margin-bottom: 10px;">전화 또는 온라인으로 서비스 접수</li>
+                            <li style="margin-bottom: 10px;">기술상담을 통한 1차 문제 진단</li>
+                            <li style="margin-bottom: 10px;">필요시 현장 방문 및 상세 진단</li>
+                            <li style="margin-bottom: 10px;">수리 및 부품 교체 진행</li>
+                            <li style="margin-bottom: 10px;">작동 테스트 및 고객 확인</li>
+                        </ol>
+                        
+                        <div class="contact-item" style="background: linear-gradient(135deg, #e74c3c, #c0392b); margin: 20px 0;">
+                            <div class="contact-icon">📞</div>
+                            <div class="contact-title">긴급 A/S 핫라인</div>
+                            <p style="font-size: 1.5rem; font-weight: bold;">1544-3323</p>
+                            <p>24시간 접수 가능 (응급 상황 시)</p>
+                        </div>
+                    </div>
+                    <div class="support-image">
+                        <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="A/S 서비스">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 자주 묻는 질문 섹션 -->
+        <section id="faq" class="support-section">
+            <h2 class="section-title">자주 묻는 질문</h2>
+            <div class="support-card">
+                <div class="support-header">
+                    <div class="support-icon">❓</div>
+                    <h3 class="support-name">FAQ - 자주 묻는 질문</h3>
+                </div>
+                <div class="support-content">
+                    <div class="support-text">
+                        <p>GVITA 파크골프 시설 이용과 관련하여 자주 문의하시는 질문과 답변을 모았습니다.</p>
+                        
+                        <div class="faq-list">
+                            <div class="faq-item">
+                                <div class="faq-question">
+                                    <span>파크골프 시설 설치에 필요한 공간 크기는 어떻게 되나요?</span>
+                                    <span>+</span>
+                                </div>
+                                <div class="faq-answer">
+                                    <p>표준 설치 규격은 4.5m(가로) X 8m(세로) X 3.3m(높이)로 약 11평 규모입니다. 공간 여건에 따라 3.5m X 7m 크기로도 설치 가능합니다.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="faq-item">
+                                <div class="faq-question">
+                                    <span>설치 비용은 얼마 정도 소요되나요?</span>
+                                    <span>+</span>
+                                </div>
+                                <div class="faq-answer">
+                                    <p>GVITA PRO 기준 설치 비용은 약 3,500만원(인테리어 별도)부터 시작합니다. GVITA LITE 모델은 2,500만원대부터 제공됩니다. 상세 견적은 현장 조사 후 제공해 드립니다.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="faq-item">
+                                <div class="faq-question">
+                                    <span>정기 유지보수는 어떻게 진행되나요?</span>
+                                    <span>+</span>
+                                </div>
+                                <div class="faq-answer">
+                                    <p>계약에 따라 분기별 또는 반기별 정기 점검을 진행합니다. 센서 교정, 소프트웨어 업데이트, 하드웨어 점검 등을 포함하며, 고객에게 점검 결과 보고서를 제공합니다.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="faq-item">
+                                <div class="faq-question">
+                                    <span>소프트웨어 업데이트는 어떻게 하나요?</span>
+                                    <span>+</span>
+                                </div>
+                                <div class="faq-answer">
+                                    <p>자동 업데이트 시스템을 통해 원격으로 진행됩니다. 주요 업데이트 시 사전 안내 후 진행하며, 업데이트 내용에 대한 상세 설명을 제공합니다.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="faq-item">
+                                <div class="faq-question">
+                                    <span>파크골프와 일반 골프의 차이점은 무엇인가요?</span>
+                                    <span>+</span>
+                                </div>
+                                <div class="faq-answer">
+                                    <p>파크골프는 86cm 이하의 짧은 클럽과 부드러운 플라스틱 공을 사용하며, 노인, 장애우, 어린이도 쉽게 즐길 수 있는 스포츠입니다. 규칙이 단순하고 부상 위험이 적어 모든 연령대가 안전하게 즐길 수 있습니다.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="support-image">
+                        <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="고객 상담">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 자료실 섹션 -->
+        <section id="download" class="support-section">
+            <h2 class="section-title">자료실</h2>
+            <div class="support-card">
+                <div class="support-header">
+                    <div class="support-icon">📁</div>
+                    <h3 class="support-name">다운로드 자료실</h3>
+                </div>
+                <div class="support-content">
+                    <div class="support-text">
+                        <p>GVITA 파크골프 시설 운영에 필요한 다양한 매뉴얼과 자료를 다운로드하실 수 있습니다.</p>
+                        
+                        <h4>제품 매뉴얼</h4>
+                        <div class="download-list">
+                            <div class="download-item">
+                                <div>
+                                    <strong>GVITA PRO 사용 설명서</strong>
+                                    <p>GVITA PRO 모델의 상세 사용 방법과 기능 설명</p>
+                                </div>
+                                <button class="download-btn">다운로드</button>
+                            </div>
+                            <div class="download-item">
+                                <div>
+                                    <strong>GVITA LITE 사용 설명서</strong>
+                                    <p>GVITA LITE 모델의 기본 사용 방법</p>
+                                </div>
+                                <button class="download-btn">다운로드</button>
+                            </div>
+                            <div class="download-item">
+                                <div>
+                                    <strong>시스템 설치 가이드</strong>
+                                    <p>시설 설치를 위한 공간 준비 가이드</p>
+                                </div>
+                                <button class="download-btn">다운로드</button>
+                            </div>
+                        </div>
+                        
+                        <h4>운영 자료</h4>
+                        <div class="download-list">
+                            <div class="download-item">
+                                <div>
+                                    <strong>프로그램 운영 매뉴얼</strong>
+                                    <p>파크골프 프로그램 운영을 위한 지침서</p>
+                                </div>
+                                <button class="download-btn">다운로드</button>
+                            </div>
+                            <div class="download-item">
+                                <div>
+                                    <strong>안전 관리 지침</strong>
+                                    <p>시설 이용 시 안전 수칙과 관리 방법</p>
+                                </div>
+                                <button class="download-btn">다운로드</button>
+                            </div>
+                            <div class="download-item">
+                                <div>
+                                    <strong>정기점검 체크리스트</strong>
+                                    <p>자가 점검을 위한 체크리스트</p>
+                                </div>
+                                <button class="download-btn">다운로드</button>
+                            </div>
+                        </div>
+                        
+                        <h4>프로모션 자료</h4>
+                        <div class="download-list">
+                            <div class="download-item">
+                                <div>
+                                    <strong>파크골프 소개 브로셔</strong>
+                                    <p>파크골프 소개 및 효과 설명 자료</p>
+                                </div>
+                                <button class="download-btn">다운로드</button>
+                            </div>
+                            <div class="download-item">
+                                <div>
+                                    <strong>GVITA 제품 카탈로그</strong>
+                                    <p>전체 제품 라인업 소개 책자</p>
+                                </div>
+                                <button class="download-btn">다운로드</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="support-image">
+                        <img src="https://images.unsplash.com/photo-1611224923853-80b023f02d71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="자료실">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 고객문의 섹션 -->
+        <section id="contact" class="support-section">
+            <h2 class="section-title">고객문의</h2>
+            <div class="support-card">
+                <div class="support-header">
+                    <div class="support-icon">📞</div>
+                    <h3 class="support-name">문의 및 상담</h3>
+                </div>
+                <div class="support-content">
+                    <div class="support-text">
+                        <p>GVITA 파크골프에 대한 궁금한 점이 있으시면 언제든지 문의해 주세요. 전문 상담사가 친절하게 안내해 드립니다.</p>
+                        
+                        <div class="contact-grid">
+                            <div class="contact-item">
+                                <div class="contact-icon">📞</div>
+                                <div class="contact-title">전화 문의</div>
+                                <p>1544-3323</p>
+                                <p>평일 09:00 ~ 18:00</p>
+                            </div>
+                            <div class="contact-item">
+                                <div class="contact-icon">✉️</div>
+                                <div class="contact-title">이메일 문의</div>
+                                <p>support@gvita.co.kr</p>
+                                <p>24시간 접수 가능</p>
+                            </div>
+                            <div class="contact-item">
+                                <div class="contact-icon">💬</div>
+                                <div class="contact-title">카카오톡 상담</div>
+                                <p>@GVITA</p>
+                                <p>실시간 채팅 상담</p>
+                            </div>
+                            <div class="contact-item">
+                                <div class="contact-icon">🏢</div>
+                                <div class="contact-title">방문 상담</div>
+                                <p>사전 예약제</p>
+                                <p>전국 서비스 센터</p>
+                            </div>
+                        </div>
+                        
+                        <div class="support-form">
+                            <h4>온라인 문의하기</h4>
+                            <form id="supportForm">
+                                <div class="form-group">
+                                    <label for="name">이름</label>
+                                    <input type="text" id="name" name="name" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="phone">연락처</label>
+                                    <input type="tel" id="phone" name="phone" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="email">이메일</label>
+                                    <input type="email" id="email" name="email" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="inquiry-type">문의 유형</label>
+                                    <select id="inquiry-type" name="inquiry-type" required>
+                                        <option value="">선택해주세요</option>
+                                        <option value="product">제품 문의</option>
+                                        <option value="as">A/S 문의</option>
+                                        <option value="install">설치 문의</option>
+                                        <option value="partnership">제휴 문의</option>
+                                        <option value="etc">기타 문의</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="message">문의 내용</label>
+                                    <textarea id="message" name="message" placeholder="문의하실 내용을 상세히 작성해주세요." required></textarea>
+                                </div>
+                                
+                                <button type="submit" class="submit-btn">문의하기</button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="support-image">
+                        <img src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="고객 상담">
+                    </div>
+                </div>
+                
+                <div style="margin-top:30px; background:#f8f9fa; padding:20px; border-radius:8px;">
+                    <h4>연락처 정보</h4>
+                    <p><strong>본사:</strong> 서울 금천구 가산디지털2로 34</p>
+                    <p><strong>레저사업본부:</strong> 부산광역시 해운대구 송정광어골로 82</p>
+                    <p><strong>전화:</strong> 051-710-3323 / 010-2723-5010</p>
+                    <p><strong>이메일:</strong> support@gvita.co.kr</p>
+                    <p><strong>운영시간:</strong> 평일 09:00 ~ 18:00 (점심시간 12:00 ~ 13:00)</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>GVITA</h3>
+                    <p>최고의 파크 골프 경험을 제공하는 GVITA 시뮬레이터</p>
+                </div>
+                <div class="footer-section">
+                    <h3>연락처</h3>
+                    <p>전화: 010-2723-5010</p>
+                    <p>이메일: info@gvita.co.kr</p>
+                </div>
+                <div class="footer-section">
+                    <h3>주소</h3>
+                    <p>서울 금천구 가산디지털2로 34</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 GVITA. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 모바일 메뉴 클릭 시 내용 가리지 않도록 조정
+        document.addEventListener('DOMContentLoaded', function() {
+            const navLinks = document.querySelectorAll('nav a');
+            
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    if (window.innerWidth <= 768) {
+                        const targetId = this.getAttribute('href');
+                        if (targetId && targetId.startsWith('#')) {
+                            e.preventDefault();
+                            const targetElement = document.querySelector(targetId);
+                            if (targetElement) {
+                                // 헤더 높이만큼 여유를 두고 스크롤
+                                const headerHeight = document.querySelector('header').offsetHeight;
+                                const targetPosition = targetElement.offsetTop - headerHeight - 20;
+                                
+                                window.scrollTo({
+                                    top: targetPosition,
+                                    behavior: 'smooth'
+                                });
+                            }
+                        }
+                    }
+                });
+            });
+            
+            // FAQ 아코디언 기능
+            const faqItems = document.querySelectorAll('.faq-item');
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question');
+                question.addEventListener('click', () => {
+                    // 다른 모든 FAQ 닫기
+                    faqItems.forEach(otherItem => {
+                        if (otherItem !== item) {
+                            otherItem.classList.remove('active');
+                        }
+                    });
+                    // 현재 FAQ 토글
+                    item.classList.toggle('active');
+                });
+            });
+            
+            // 다운로드 버튼 기능
+            const downloadBtns = document.querySelectorAll('.download-btn');
+            downloadBtns.forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    alert('다운로드가 시작됩니다. 파일이 없는 경우 고객센터로 문의해주세요.');
+                });
+            });
+            
+            // 문의 폼 처리
+            const supportForm = document.getElementById('supportForm');
+            if (supportForm) {
+                supportForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    alert('문의가 접수되었습니다. 빠른 시일 내에 연락드리겠습니다.');
+                    supportForm.reset();
+                });
+            }
+            
+            // 모바일에서 섹션으로 이동 후 URL 업데이트
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.5
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        history.replaceState(null, null, `#${entry.target.id}`);
+                    }
+                });
+            }, observerOptions);
+            
+            document.querySelectorAll('.support-section').forEach(section => {
+                observer.observe(section);
+            });
+        });
+    </script>
+</body>
+</html>
